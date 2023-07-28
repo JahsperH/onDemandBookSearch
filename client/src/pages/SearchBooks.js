@@ -8,7 +8,6 @@ import {
   Row
 } from 'react-bootstrap';
 
-
 import Auth from '../utils/auth';
 import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
@@ -16,28 +15,20 @@ import { useMutation } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
 
 const SearchBooks = () => {
-  // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
-  // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
-
-  // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
-  // set up useEffect hook to save savedBookIds list to localStorage on component unmount
   useEffect(() => {
     return () => saveBookIds(savedBookIds);
-  });
-};
+  }, [savedBookIds]);
 
-  // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
     if (!searchInput) {
       return false;
     }
-  };
 
     try {
       const response = await searchGoogleBooks(searchInput);
@@ -50,14 +41,22 @@ const SearchBooks = () => {
 
       const bookData = items.map((book) => ({
         bookId: book.id,
-        authors: book.volumeInfo.authors  ['No author to display'],
+        authors: book.volumeInfo.authors || ['No author to display'],
         title: book.volumeInfo.title,
         description: book.volumeInfo.description,
-        image: book.volumeInfo.imageLinks?.thumbnail  '',
+        image: book.volumeInfo.imageLinks?.thumbnail || '',
         link: book.volumeInfo.infoLink
-      }
-      ));
-return (
+      }));
+      
+      setSearchedBooks(bookData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // The handleSaveBook function is not defined in this code snippet. Make sure it's defined elsewhere.
+
+  return (
     <>
       <div className='text-light bg-dark pt-5'>
         <Container>
@@ -87,17 +86,16 @@ return (
       <Container>
         <h2 className='pt-5'>
           {searchedBooks.length
-            ? Viewing ${searchedBooks.length} results:
+            ? `Viewing ${searchedBooks.length} results:`
             : 'Search for a book to begin'}
         </h2>
         <Row>
-          
-{searchedBooks.map((book) => {
+          {searchedBooks.map((book) => {
             return (
               <Col md="4" key={book.bookId}>
                 <Card border='dark'>
                   {book.image ? (
-                    <Card.Img src={book.image} alt={The cover for ${book.title}} variant='top' />
+                    <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' />
                   ) : null}
                   <Card.Body>
                     <Card.Title>{book.title}</Card.Title>

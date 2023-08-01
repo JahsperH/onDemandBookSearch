@@ -39,7 +39,7 @@ const typeDefs = gql `
   image: String
   link: String
   }
-    `
-;
+    `;
+
 
 module.exports = typeDefs;

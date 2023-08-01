@@ -3,6 +3,7 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
+
 const SignupForm = () => {
   // set initial form state
   const [userFormData, setUserFormData] = useState({ userName: '', email: '', password: '' });
@@ -17,6 +18,7 @@ const SignupForm = () => {
     setUserFormData({ ...userFormData, [name]: value });
     
   };
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     // check if form has everything (as per react-bootstrap docs)
@@ -42,6 +44,7 @@ const SignupForm = () => {
       password: '',
     });
   };
+
   return (
     <>
       {/* This is needed for the validation functionality above */}
@@ -54,7 +57,7 @@ const SignupForm = () => {
           <Form.Label htmlFor='userName'>Username</Form.Label>
           <Form.Control
             type='text'
-            placeholder='Your username'
+            placeholder='Your userName'
             name='userName'
             onChange={handleInputChange}
             value={userFormData.userName}
@@ -96,4 +99,5 @@ const SignupForm = () => {
     </>
   );
 };
+
 export default SignupForm;

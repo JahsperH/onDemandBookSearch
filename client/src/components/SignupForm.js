@@ -44,7 +44,7 @@ const SignupForm = () => {
       password: '',
     });
   };
-
+  
   return (
     <>
       {/* This is needed for the validation functionality above */}
@@ -57,7 +57,7 @@ const SignupForm = () => {
           <Form.Label htmlFor='userName'>Username</Form.Label>
           <Form.Control
             type='text'
-            placeholder='Your userName'
+            placeholder='Your username'
             name='userName'
             onChange={handleInputChange}
             value={userFormData.userName}
